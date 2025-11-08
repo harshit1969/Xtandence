@@ -1,0 +1,3049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xtandence - Smart Attendance Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6d28d9;
+            --primary-light: #8b5cf6;
+            --primary-dark: #5b21b6;
+            --secondary: #0d9488;
+            --accent: #f59e0b;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --warning: #d97706;
+            --info: #2563eb;
+            
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --bg-input: #475569;
+            
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            --border: #475569;
+            --shadow: rgba(0, 0, 0, 0.4);
+            
+            --transition: all 0.3s ease;
+        }
+
+        /* Light Theme */
+        .light-theme {
+            --primary: #7c3aed;
+            --primary-light: #8b5cf6;
+            --primary-dark: #5b21b6;
+            --secondary: #0d9488;
+            --accent: #f59e0b;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --warning: #d97706;
+            --info: #2563eb;
+            
+            --bg-primary: #f8fafc;
+            --bg-secondary: #e2e8f0;
+            --bg-card: #ffffff;
+            --bg-input: #f1f5f9;
+            
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            
+            --border: #cbd5e1;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        .blue-theme {
+            --primary: #1d4ed8;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary: #0e7490;
+            --accent: #f59e0b;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --warning: #d97706;
+            --info: #2563eb;
+            
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e3a8a;
+            --bg-input: #1e40af;
+            
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            --border: #1e40af;
+            --shadow: rgba(0, 0, 0, 0.4);
+        }
+
+        .green-theme {
+            --primary: #059669;
+            --primary-light: #10b981;
+            --primary-dark: #047857;
+            --secondary: #0d9488;
+            --accent: #f59e0b;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --warning: #d97706;
+            --info: #2563eb;
+            
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #064e3b;
+            --bg-input: #065f46;
+            
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            --border: #065f46;
+            --shadow: rgba(0, 0, 0, 0.4);
+        }
+
+        .purple-theme {
+            --primary: #7c3aed;
+            --primary-light: #8b5cf6;
+            --primary-dark: #5b21b6;
+            --secondary: #7e22ce;
+            --accent: #f59e0b;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --warning: #d97706;
+            --info: #2563eb;
+            
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #581c87;
+            --bg-input: #6b21a8;
+            
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            --border: #6b21a8;
+            --shadow: rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: var(--transition);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Loader Styles */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader-content {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            max-width: 500px;
+        }
+
+        .loader-logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .loader-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .loader-quote {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .loader-credits {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .loader-credits p {
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .loader-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .loader-progress-bar {
+            height: 100%;
+            background: white;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .desktop-suggestion {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Main App Styles */
+        #mainApp {
+            display: none;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 15px 0;
+            box-shadow: 0 4px 12px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .time-widget {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 8px 15px;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .time-widget i {
+            font-size: 0.9rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-actions button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .header-actions button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(15deg);
+        }
+
+        .credits-footer {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .credits-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .credits-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .donate-btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 10px auto;
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+        }
+
+        .donate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(245, 158, 11, 0.4);
+        }
+
+        .greeting {
+            margin: 20px 0;
+            padding: 15px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 4px 10px var(--shadow);
+            border-left: 4px solid var(--primary);
+        }
+
+        .greeting h2 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .greeting p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 10px var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px var(--shadow);
+        }
+
+        .stat-card h3 {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 25px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .subjects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .subject-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 10px var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px var(--shadow);
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--subject-color, var(--primary));
+        }
+
+        .subject-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .subject-action-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .subject-action-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+            transform: scale(1.1);
+        }
+
+        .subject-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--subject-color, var(--primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            color: white;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .subject-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .attendance-percent {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .attendance-progress {
+            height: 6px;
+            background: var(--bg-input);
+            border-radius: 3px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .good-attendance {
+            background: var(--success);
+        }
+
+        .warning-attendance {
+            background: var(--warning);
+        }
+
+        .poor-attendance {
+            background: var(--danger);
+        }
+
+        .attendance-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .attendance-btn {
+            flex: 1;
+            padding: 8px 0;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 0.85rem;
+        }
+
+        .present-btn {
+            background: rgba(22, 163, 74, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(22, 163, 74, 0.3);
+        }
+
+        .present-btn:hover {
+            background: rgba(22, 163, 74, 0.25);
+        }
+
+        .absent-btn {
+            background: rgba(220, 38, 38, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+        }
+
+        .absent-btn:hover {
+            background: rgba(220, 38, 38, 0.25);
+        }
+
+        .add-subject-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+            width: 100%;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
+            font-size: 1rem;
+        }
+
+        .add-subject-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(109, 40, 217, 0.4);
+        }
+
+        .recent-activity {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px var(--shadow);
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .present-icon {
+            background: var(--success);
+        }
+
+        .absent-icon {
+            background: var(--danger);
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-subject {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .activity-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -4px 12px var(--shadow);
+            z-index: 100;
+            border-top: 1px solid var(--border);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 5px 8px;
+            border-radius: 8px;
+            flex: 1;
+            max-width: 80px;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(109, 40, 217, 0.1);
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 25px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .subject-colors {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .color-option.selected {
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+            transform: scale(1.1);
+        }
+
+        .calendar-container {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px var(--shadow);
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calendar-nav-btn {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calendar-nav-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day {
+            text-align: center;
+            padding: 8px 2px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .calendar-date {
+            text-align: center;
+            padding: 10px 2px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .calendar-date:hover {
+            background: var(--bg-input);
+        }
+
+        .calendar-date.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-date.has-attendance::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stats-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .stats-card h3 {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stats-card h3 i {
+            color: var(--primary);
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+            color: white;
+            box-shadow: 0 6px 15px rgba(109, 40, 217, 0.4);
+        }
+
+        .profile-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        .detail-item {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .detail-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .settings-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .settings-option:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--bg-input);
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .widget {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 99;
+            transition: var(--transition);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        .widget:hover {
+            transform: scale(1.1);
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .icon-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-input);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .icon-option.selected {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .icon-option:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .theme-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .theme-option.selected {
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+            transform: scale(1.1);
+        }
+
+        .theme-option:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-option .theme-tooltip {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+
+        .theme-option:hover .theme-tooltip {
+            opacity: 1;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 0 25px;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .subjects-container {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+            
+            .profile-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .calendar-grid {
+                gap: 8px;
+            }
+            
+            .calendar-date, .calendar-day {
+                padding: 12px 5px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                padding: 0 30px;
+            }
+            
+            .subjects-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .profile-details {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .widget {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .calendar-grid {
+                gap: 3px;
+            }
+            
+            .calendar-date, .calendar-day {
+                padding: 8px 2px;
+                font-size: 0.8rem;
+            }
+            
+            .calendar-nav-btn {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .icon-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .header-info {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-end;
+            }
+            
+            .time-widget {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+            
+            .desktop-suggestion {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <!-- Loader -->
+    <div id="loader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <h1 class="loader-title">Xtandence</h1>
+            <p class="loader-quote">"Your attendance is the first step towards your success. Track it wisely."</p>
+            <div class="loader-progress">
+                <div class="loader-progress-bar" id="loaderProgress"></div>
+            </div>
+            <div class="loader-credits">
+                <p>Created by Harshit Tripathi</p>
+                <p>Powered by Xtaverse Digital</p>
+            </div>
+            <div class="desktop-suggestion">
+                <p>For better experience, use Xtandence on your laptop</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp">
+        <!-- Welcome Modal -->
+        <div class="modal" id="welcomeModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Welcome to Xtandence</h2>
+                </div>
+                <form id="welcomeForm">
+                    <div class="form-group">
+                        <label for="userName">Your Name</label>
+                        <input type="text" id="userName" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userCollege">College/Institution</label>
+                        <input type="text" id="userCollege" class="form-control" placeholder="Enter your college name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userCourse">Course/Program</label>
+                        <input type="text" id="userCourse" class="form-control" placeholder="Enter your course" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userSemester">Current Semester</label>
+                        <input type="number" id="userSemester" class="form-control" placeholder="Enter semester" min="1" max="10" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Get Started</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Donation Modal -->
+        <div class="modal" id="donationModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Support Xtandence</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div style="text-align: center; padding: 20px 0;">
+                    <i class="fas fa-heart" style="font-size: 3rem; color: #dc2626; margin-bottom: 15px;"></i>
+                    <h3 style="margin-bottom: 10px;">Love using Xtandence?</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                        Xtandence is a non-profit project created to help students track their attendance. 
+                        Your support helps us maintain and improve this free tool for everyone.
+                    </p>
+                    <button class="donate-btn" id="donateNowBtn" style="margin: 0 auto;">
+                        <i class="fas fa-gift"></i> Support the Project
+                    </button>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 15px;">
+                        Donation link coming soon...
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo" id="logo">
+                        <i class="fas fa-calendar-check logo-icon"></i>
+                        <h1>Xtandence</h1>
+                    </div>
+                    <div class="header-info">
+                        <div class="time-widget" id="timeWidget">
+                            <i class="fas fa-clock"></i>
+                            <span id="currentTime">Loading...</span>
+                        </div>
+                        <div class="header-actions">
+                            <button id="themeToggle" title="Change Theme">
+                                <i class="fas fa-palette"></i>
+                            </button>
+                            <button id="donateHeaderBtn" title="Support Us">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button id="settingsBtn" title="Settings">
+                                <i class="fas fa-cog"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- Home Page -->
+            <div class="page active" id="homePage">
+                <div class="greeting">
+                    <h2><i class="fas fa-home"></i> Welcome back!</h2>
+                    <p id="homeGreeting">Track your attendance and stay on top of your classes.</p>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <h3>Total Subjects</h3>
+                        <div class="stat-value" id="totalSubjects">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Today's Attendance</h3>
+                        <div class="stat-value" id="todayAttendance">0/0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Overall %</h3>
+                        <div class="stat-value" id="overallPercent">0%</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Current Streak</h3>
+                        <div class="stat-value" id="currentStreak">0 days</div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">
+                    <i class="fas fa-book-open"></i>
+                    My Subjects
+                </h2>
+
+                <div class="subjects-container" id="subjectsContainer">
+                    <!-- Subjects will be dynamically added here -->
+                </div>
+
+                <button class="add-subject-btn" id="addSubjectBtn">
+                    <i class="fas fa-plus"></i>
+                    Add New Subject
+                </button>
+
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i>
+                    Recent Activity
+                </h2>
+
+                <div class="recent-activity" id="recentActivity">
+                    <!-- Activity items will be dynamically added here -->
+                </div>
+
+                <div class="credits-footer">
+                    <p>Created with ❤️ by <a href="#" id="creatorLink">Harshit Tripathi</a> | Powered by <a href="#" id="companyLink">Xtaverse Digital</a></p>
+                    <button class="donate-btn" id="donateMainBtn">
+                        <i class="fas fa-heart"></i> Support Xtandence
+                    </button>
+                </div>
+            </div>
+
+            <!-- Other pages remain the same -->
+            <!-- Stats Page -->
+            <div class="page" id="statsPage">
+                <div class="greeting">
+                    <h2><i class="fas fa-chart-bar"></i> Your Attendance Stats</h2>
+                    <p>Track your progress and identify areas for improvement.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stats-card">
+                        <h3><i class="fas fa-trophy"></i> Best Subject</h3>
+                        <div id="bestSubject" class="stat-value">--</div>
+                        <div id="bestSubjectPercent" class="attendance-percent">--%</div>
+                    </div>
+                    <div class="stats-card">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Needs Improvement</h3>
+                        <div id="worstSubject" class="stat-value">--</div>
+                        <div id="worstSubjectPercent" class="attendance-percent">--%</div>
+                    </div>
+                    <div class="stats-card">
+                        <h3><i class="fas fa-calendar-alt"></i> This Month</h3>
+                        <div id="monthAttendance" class="stat-value">--%</div>
+                        <div class="attendance-percent">Attendance Rate</div>
+                    </div>
+                    <div class="stats-card">
+                        <h3><i class="fas fa-fire"></i> Longest Streak</h3>
+                        <div id="longestStreak" class="stat-value">0 days</div>
+                        <div class="attendance-percent">Best performance</div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">
+                    <i class="fas fa-chart-pie"></i>
+                    Subject-wise Breakdown
+                </h2>
+
+                <div class="subjects-container" id="statsSubjectsContainer">
+                    <!-- Stats subject cards will be dynamically added here -->
+                </div>
+
+                <div class="credits-footer">
+                    <p>Created with ❤️ by <a href="#" id="creatorLink">Harshit Tripathi</a> | Powered by <a href="#" id="companyLink">Xtaverse Digital</a></p>
+                    <button class="donate-btn" id="donateStatsBtn">
+                        <i class="fas fa-heart"></i> Support Xtandence
+                    </button>
+                </div>
+            </div>
+
+            <!-- Calendar Page -->
+            <div class="page" id="calendarPage">
+                <div class="greeting">
+                    <h2><i class="fas fa-calendar-alt"></i> Attendance Calendar</h2>
+                    <p>View your attendance history by month.</p>
+                </div>
+
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <div class="calendar-nav">
+                            <button id="prevMonth" class="calendar-nav-btn">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button id="nextMonth" class="calendar-nav-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <h3 id="currentMonth">October 2023</h3>
+                        <button id="todayBtn" class="calendar-nav-btn">
+                            Today
+                        </button>
+                    </div>
+                    <div class="calendar-grid" id="calendarDays">
+                        <!-- Calendar day headers -->
+                        <div class="calendar-day">Sun</div>
+                        <div class="calendar-day">Mon</div>
+                        <div class="calendar-day">Tue</div>
+                        <div class="calendar-day">Wed</div>
+                        <div class="calendar-day">Thu</div>
+                        <div class="calendar-day">Fri</div>
+                        <div class="calendar-day">Sat</div>
+                        <!-- Calendar dates will be dynamically added here -->
+                    </div>
+                </div>
+
+                <h2 class="section-title">
+                    <i class="fas fa-list"></i>
+                    Monthly Summary
+                </h2>
+
+                <div class="recent-activity" id="calendarActivity">
+                    <!-- Calendar activity will be dynamically added here -->
+                </div>
+
+                <div class="credits-footer">
+                    <p>Created with ❤️ by <a href="#" id="creatorLink">Harshit Tripathi</a> | Powered by <a href="#" id="companyLink">Xtaverse Digital</a></p>
+                    <button class="donate-btn" id="donateCalendarBtn">
+                        <i class="fas fa-heart"></i> Support Xtandence
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div class="page" id="profilePage">
+                <div class="greeting">
+                    <h2><i class="fas fa-user"></i> Your Profile</h2>
+                    <p>Manage your personal information and account settings.</p>
+                </div>
+
+                <div class="profile-section">
+                    <div class="profile-pic">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="profile-name" id="profileUserName">User Name</div>
+                    <div class="attendance-percent" id="profileUserCollege">College Name</div>
+                    <button class="attendance-btn present-btn" id="editProfileBtn" style="margin-top: 15px; width: auto; padding: 8px 15px;">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                </div>
+
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Course</div>
+                        <div class="detail-value" id="profileUserCourse">--</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Semester</div>
+                        <div class="detail-value" id="profileUserSemester">--</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Member Since</div>
+                        <div class="detail-value" id="profileJoinDate">--</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Total Subjects</div>
+                        <div class="detail-value" id="profileTotalSubjects">0</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Overall Attendance</div>
+                        <div class="detail-value" id="profileOverallAttendance">0%</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Current Streak</div>
+                        <div class="detail-value" id="profileCurrentStreak">0 days</div>
+                    </div>
+                </div>
+
+                <div class="credits-footer">
+                    <p>Created with ❤️ by <a href="#" id="creatorLink">Harshit Tripathi</a> | Powered by <a href="#" id="companyLink">Xtaverse Digital</a></p>
+                    <button class="donate-btn" id="donateProfileBtn">
+                        <i class="fas fa-heart"></i> Support Xtandence
+                    </button>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div class="page" id="settingsPage">
+                <div class="greeting">
+                    <h2><i class="fas fa-cog"></i> Settings</h2>
+                    <p>Customize your app experience and manage your data.</p>
+                </div>
+
+                <div class="recent-activity">
+                    <div class="settings-option">
+                        <div>
+                            <div class="activity-subject">Theme Selection</div>
+                            <div class="activity-date">Choose your preferred theme</div>
+                        </div>
+                        <div class="theme-selector" id="themeSelector">
+                            <div class="theme-option selected" data-theme="dark" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+                                <div class="theme-tooltip">Dark</div>
+                            </div>
+                            <div class="theme-option" data-theme="light" style="background: linear-gradient(135deg, #f8fafc, #e2e8f0);">
+                                <div class="theme-tooltip">Light</div>
+                            </div>
+                            <div class="theme-option" data-theme="blue" style="background: linear-gradient(135deg, #1d4ed8, #1e40af);">
+                                <div class="theme-tooltip">Blue</div>
+                            </div>
+                            <div class="theme-option" data-theme="green" style="background: linear-gradient(135deg, #059669, #047857);">
+                                <div class="theme-tooltip">Green</div>
+                            </div>
+                            <div class="theme-option" data-theme="purple" style="background: linear-gradient(135deg, #7c3aed, #5b21b6);">
+                                <div class="theme-tooltip">Purple</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-option">
+                        <div>
+                            <div class="activity-subject">Notifications</div>
+                            <div class="activity-date">Receive attendance reminders</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="notificationsToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-option">
+                        <div>
+                            <div class="activity-subject">Auto-backup</div>
+                            <div class="activity-date">Automatically backup your data</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="backupToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-option">
+                        <div>
+                            <div class="activity-subject">Reset Data</div>
+                            <div class="activity-date">Clear all your attendance records</div>
+                        </div>
+                        <button class="attendance-btn absent-btn" id="resetDataBtn" style="width: auto; padding: 8px 15px;">
+                            Reset
+                        </button>
+                    </div>
+                    <div class="settings-option">
+                        <div>
+                            <div class="activity-subject">Export Data</div>
+                            <div class="activity-date">Download your attendance data as CSV</div>
+                        </div>
+                        <button class="attendance-btn present-btn" id="exportDataBtn" style="width: auto; padding: 8px 15px;">
+                            Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="credits-footer">
+                    <p>Created with ❤️ by <a href="#" id="creatorLink">Harshit Tripathi</a> | Powered by <a href="#" id="companyLink">Xtaverse Digital</a></p>
+                    <button class="donate-btn" id="donateSettingsBtn">
+                        <i class="fas fa-heart"></i> Support Xtandence
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="nav-item active" data-page="homePage">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" data-page="statsPage">
+                <i class="fas fa-chart-bar"></i>
+                <span>Stats</span>
+            </div>
+            <div class="nav-item" data-page="calendarPage">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Calendar</span>
+            </div>
+            <div class="nav-item" data-page="profilePage">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </div>
+        </div>
+
+        <!-- Quick Action Widget -->
+        <div class="widget" id="quickWidget" title="Quick Actions">
+            <i class="fas fa-bolt"></i>
+        </div>
+
+        <!-- Add Subject Modal -->
+        <div class="modal" id="addSubjectModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add New Subject</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <form id="addSubjectForm">
+                    <div class="form-group">
+                        <label for="subjectName">Subject Name</label>
+                        <input type="text" id="subjectName" class="form-control" placeholder="e.g. Mathematics" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject Color</label>
+                        <div class="subject-colors">
+                            <div class="color-option selected" style="background-color: #6d28d9;" data-color="#6d28d9"></div>
+                            <div class="color-option" style="background-color: #0d9488;" data-color="#0d9488"></div>
+                            <div class="color-option" style="background-color: #dc2626;" data-color="#dc2626"></div>
+                            <div class="color-option" style="background-color: #f59e0b;" data-color="#f59e0b"></div>
+                            <div class="color-option" style="background-color: #16a34a;" data-color="#16a34a"></div>
+                            <div class="color-option" style="background-color: #2563eb;" data-color="#2563eb"></div>
+                            <div class="color-option" style="background-color: #9333ea;" data-color="#9333ea"></div>
+                            <div class="color-option" style="background-color: #ea580c;" data-color="#ea580c"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectIcon">Subject Icon</label>
+                        <div class="icon-grid" id="iconGrid">
+                            <!-- Icons will be dynamically added here -->
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Add Subject</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit Subject Modal -->
+        <div class="modal" id="editSubjectModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Edit Subject</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <form id="editSubjectForm">
+                    <input type="hidden" id="editSubjectId">
+                    <div class="form-group">
+                        <label for="editSubjectName">Subject Name</label>
+                        <input type="text" id="editSubjectName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject Color</label>
+                        <div class="subject-colors" id="editSubjectColors">
+                            <!-- Colors will be dynamically added here -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editSubjectIcon">Subject Icon</label>
+                        <div class="icon-grid" id="editIconGrid">
+                            <!-- Icons will be dynamically added here -->
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: flex; gap: 10px;">
+                        <button type="submit" class="btn-primary" style="flex: 2;">Update Subject</button>
+                        <button type="button" id="deleteSubjectBtn" class="attendance-btn absent-btn" style="flex: 1;">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit Profile Modal -->
+        <div class="modal" id="editProfileModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Edit Profile</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <form id="editProfileForm">
+                    <div class="form-group">
+                        <label for="editUserName">Your Name</label>
+                        <input type="text" id="editUserName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserCollege">College/Institution</label>
+                        <input type="text" id="editUserCollege" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserCourse">Course/Program</label>
+                        <input type="text" id="editUserCourse" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserSemester">Current Semester</label>
+                        <input type="number" id="editUserSemester" class="form-control" min="1" max="10" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Update Profile</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Quick Actions Modal -->
+        <div class="modal" id="quickActionsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Quick Actions</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                    <button class="attendance-btn present-btn" id="quickMarkAllPresent" style="padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                        <i class="fas fa-check-circle" style="font-size: 1.5rem;"></i>
+                        <span>Mark All Present</span>
+                    </button>
+                    <button class="attendance-btn absent-btn" id="quickMarkAllAbsent" style="padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                        <i class="fas fa-times-circle" style="font-size: 1.5rem;"></i>
+                        <span>Mark All Absent</span>
+                    </button>
+                    <button class="attendance-btn" id="quickAddSubject" style="background: var(--info); color: white; padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 8px; grid-column: 1 / -1;">
+                        <i class="fas fa-plus-circle" style="font-size: 1.5rem;"></i>
+                        <span>Add New Subject</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application state
+        let state = {
+            user: null,
+            subjects: [],
+            activities: [],
+            currentDate: new Date(),
+            calendarDate: new Date(),
+            settings: {
+                theme: 'dark',
+                notifications: false,
+                autoBackup: true,
+                lastDonationPrompt: null
+            }
+        };
+
+        // Available icons for subjects
+        const availableIcons = [
+            'fas fa-calculator', 'fas fa-flask', 'fas fa-book', 'fas fa-desktop',
+            'fas fa-globe', 'fas fa-atom', 'fas fa-code', 'fas fa-chart-bar',
+            'fas fa-language', 'fas fa-pencil-alt', 'fas fa-music', 'fas fa-palette',
+            'fas fa-dna', 'fas fa-microscope', 'fas fa-brain', 'fas fa-leaf',
+            'fas fa-bolt', 'fas fa-wrench', 'fas fa-building', 'fas fa-graduation-cap'
+        ];
+
+        // DOM elements
+        const loader = document.getElementById('loader');
+        const loaderProgress = document.getElementById('loaderProgress');
+        const mainApp = document.getElementById('mainApp');
+        const welcomeModal = document.getElementById('welcomeModal');
+        const donationModal = document.getElementById('donationModal');
+        const welcomeForm = document.getElementById('welcomeForm');
+        const themeToggle = document.getElementById('themeToggle');
+        const donateHeaderBtn = document.getElementById('donateHeaderBtn');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const timeWidget = document.getElementById('timeWidget');
+        const currentTime = document.getElementById('currentTime');
+        const subjectsContainer = document.getElementById('subjectsContainer');
+        const recentActivity = document.getElementById('recentActivity');
+        const addSubjectBtn = document.getElementById('addSubjectBtn');
+        const addSubjectModal = document.getElementById('addSubjectModal');
+        const editSubjectModal = document.getElementById('editSubjectModal');
+        const editProfileModal = document.getElementById('editProfileModal');
+        const quickActionsModal = document.getElementById('quickActionsModal');
+        const closeModals = document.querySelectorAll('.close-modal');
+        const addSubjectForm = document.getElementById('addSubjectForm');
+        const editSubjectForm = document.getElementById('editSubjectForm');
+        const editProfileForm = document.getElementById('editProfileForm');
+        const colorOptions = document.querySelectorAll('.color-option');
+        const totalSubjectsEl = document.getElementById('totalSubjects');
+        const todayAttendanceEl = document.getElementById('todayAttendance');
+        const overallPercentEl = document.getElementById('overallPercent');
+        const currentStreakEl = document.getElementById('currentStreak');
+        const navItems = document.querySelectorAll('.nav-item');
+        const pages = document.querySelectorAll('.page');
+        const themeSelector = document.getElementById('themeSelector');
+        const notificationsToggle = document.getElementById('notificationsToggle');
+        const backupToggle = document.getElementById('backupToggle');
+        const resetDataBtn = document.getElementById('resetDataBtn');
+        const exportDataBtn = document.getElementById('exportDataBtn');
+        const prevMonthBtn = document.getElementById('prevMonth');
+        const nextMonthBtn = document.getElementById('nextMonth');
+        const todayBtn = document.getElementById('todayBtn');
+        const currentMonthEl = document.getElementById('currentMonth');
+        const calendarDays = document.getElementById('calendarDays');
+        const calendarActivity = document.getElementById('calendarActivity');
+        const statsSubjectsContainer = document.getElementById('statsSubjectsContainer');
+        const bestSubjectEl = document.getElementById('bestSubject');
+        const worstSubjectEl = document.getElementById('worstSubject');
+        const bestSubjectPercentEl = document.getElementById('bestSubjectPercent');
+        const worstSubjectPercentEl = document.getElementById('worstSubjectPercent');
+        const monthAttendanceEl = document.getElementById('monthAttendance');
+        const longestStreakEl = document.getElementById('longestStreak');
+        const profileUserName = document.getElementById('profileUserName');
+        const profileUserCollege = document.getElementById('profileUserCollege');
+        const profileUserCourse = document.getElementById('profileUserCourse');
+        const profileUserSemester = document.getElementById('profileUserSemester');
+        const profileJoinDate = document.getElementById('profileJoinDate');
+        const profileTotalSubjects = document.getElementById('profileTotalSubjects');
+        const profileOverallAttendance = document.getElementById('profileOverallAttendance');
+        const profileCurrentStreak = document.getElementById('profileCurrentStreak');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const deleteSubjectBtn = document.getElementById('deleteSubjectBtn');
+        const iconGrid = document.getElementById('iconGrid');
+        const editIconGrid = document.getElementById('editIconGrid');
+        const editSubjectColors = document.getElementById('editSubjectColors');
+        const quickWidget = document.getElementById('quickWidget');
+        const quickMarkAllPresent = document.getElementById('quickMarkAllPresent');
+        const quickMarkAllAbsent = document.getElementById('quickMarkAllAbsent');
+        const quickAddSubject = document.getElementById('quickAddSubject');
+        const homeGreeting = document.getElementById('homeGreeting');
+        const logo = document.getElementById('logo');
+        const donateNowBtn = document.getElementById('donateNowBtn');
+        const donateMainBtn = document.getElementById('donateMainBtn');
+        const donateStatsBtn = document.getElementById('donateStatsBtn');
+        const donateCalendarBtn = document.getElementById('donateCalendarBtn');
+        const donateProfileBtn = document.getElementById('donateProfileBtn');
+        const donateSettingsBtn = document.getElementById('donateSettingsBtn');
+
+        let selectedColor = '#6d28d9';
+        let selectedIcon = 'fas fa-calculator';
+        let editingSubjectId = null;
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Start time widget
+            updateTime();
+            setInterval(updateTime, 1000);
+            
+            // Show loader first
+            showLoader();
+            
+            // Set up icon grids
+            setupIconGrid(iconGrid, 'fas fa-calculator');
+            setupIconGrid(editIconGrid, 'fas fa-calculator');
+            
+            // Set up color options for edit modal
+            setupColorOptions(editSubjectColors, '#6d28d9');
+            
+            // Event listeners
+            welcomeForm.addEventListener('submit', handleWelcomeSubmit);
+            addSubjectBtn.addEventListener('click', function() {
+                addSubjectModal.style.display = 'flex';
+            });
+            
+            // Close modals
+            closeModals.forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    modal.style.display = 'none';
+                });
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
+            });
+            
+            // Color selection
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    colorOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedColor = this.getAttribute('data-color');
+                });
+            });
+            
+            // Form submissions
+            addSubjectForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const subjectName = document.getElementById('subjectName').value;
+                
+                const newSubject = {
+                    id: Date.now(),
+                    name: subjectName,
+                    color: selectedColor,
+                    icon: selectedIcon,
+                    present: 0,
+                    total: 0
+                };
+                
+                state.subjects.push(newSubject);
+                saveData();
+                renderSubjects();
+                updateStats();
+                addSubjectModal.style.display = 'none';
+                addSubjectForm.reset();
+                
+                // Show success message
+                showNotification(`Subject "${subjectName}" added successfully!`);
+            });
+            
+            editSubjectForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const subjectName = document.getElementById('editSubjectName').value;
+                const subjectId = parseInt(document.getElementById('editSubjectId').value);
+                
+                const subjectIndex = state.subjects.findIndex(s => s.id === subjectId);
+                if (subjectIndex !== -1) {
+                    state.subjects[subjectIndex].name = subjectName;
+                    state.subjects[subjectIndex].color = selectedColor;
+                    state.subjects[subjectIndex].icon = selectedIcon;
+                    
+                    saveData();
+                    renderSubjects();
+                    updateStats();
+                    editSubjectModal.style.display = 'none';
+                    
+                    showNotification(`Subject "${subjectName}" updated successfully!`);
+                }
+            });
+            
+            editProfileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const userName = document.getElementById('editUserName').value;
+                const userCollege = document.getElementById('editUserCollege').value;
+                const userCourse = document.getElementById('editUserCourse').value;
+                const userSemester = document.getElementById('editUserSemester').value;
+                
+                state.user.name = userName;
+                state.user.college = userCollege;
+                state.user.course = userCourse;
+                state.user.semester = userSemester;
+                
+                saveData();
+                updateProfile();
+                editProfileModal.style.display = 'none';
+                
+                showNotification(`Profile updated successfully!`);
+            });
+            
+            // Delete subject
+            deleteSubjectBtn.addEventListener('click', function() {
+                const subjectId = parseInt(document.getElementById('editSubjectId').value);
+                const subject = state.subjects.find(s => s.id === subjectId);
+                
+                if (subject && confirm(`Are you sure you want to delete "${subject.name}"? This will also remove all attendance records for this subject.`)) {
+                    // Remove subject
+                    state.subjects = state.subjects.filter(s => s.id !== subjectId);
+                    
+                    // Remove activities for this subject
+                    state.activities = state.activities.filter(a => a.subject !== subject.name);
+                    
+                    saveData();
+                    renderSubjects();
+                    renderActivities();
+                    updateStats();
+                    editSubjectModal.style.display = 'none';
+                    
+                    showNotification(`Subject "${subject.name}" deleted successfully!`);
+                }
+            });
+            
+            // Navigation
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const pageId = this.getAttribute('data-page');
+                    switchPage(pageId);
+                });
+            });
+            
+            // Theme toggle in navbar - FIXED
+            themeToggle.addEventListener('click', function() {
+                // Show theme selector modal
+                switchPage('settingsPage');
+            });
+            
+            // Theme selection
+            themeSelector.addEventListener('click', function(e) {
+                if (e.target.classList.contains('theme-option')) {
+                    const theme = e.target.getAttribute('data-theme');
+                    changeTheme(theme);
+                    
+                    // Update selected state
+                    themeSelector.querySelectorAll('.theme-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    e.target.classList.add('selected');
+                }
+            });
+            
+            // Settings toggles
+            notificationsToggle.addEventListener('change', function() {
+                state.settings.notifications = this.checked;
+                saveData();
+            });
+            
+            backupToggle.addEventListener('change', function() {
+                state.settings.autoBackup = this.checked;
+                saveData();
+            });
+            
+            // Reset data
+            resetDataBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset all your data? This action cannot be undone.')) {
+                    state.subjects = [];
+                    state.activities = [];
+                    saveData();
+                    renderSubjects();
+                    renderActivities();
+                    updateStats();
+                    showNotification('All data has been reset.');
+                }
+            });
+            
+            // Export data
+            exportDataBtn.addEventListener('click', function() {
+                exportToCSV();
+            });
+            
+            // Calendar navigation
+            prevMonthBtn.addEventListener('click', function() {
+                state.calendarDate.setMonth(state.calendarDate.getMonth() - 1);
+                renderCalendar();
+            });
+            
+            nextMonthBtn.addEventListener('click', function() {
+                state.calendarDate.setMonth(state.calendarDate.getMonth() + 1);
+                renderCalendar();
+            });
+            
+            todayBtn.addEventListener('click', function() {
+                state.calendarDate = new Date();
+                renderCalendar();
+            });
+            
+            // Settings button
+            settingsBtn.addEventListener('click', function() {
+                switchPage('settingsPage');
+            });
+            
+            // Edit profile button
+            editProfileBtn.addEventListener('click', function() {
+                document.getElementById('editUserName').value = state.user.name;
+                document.getElementById('editUserCollege').value = state.user.college;
+                document.getElementById('editUserCourse').value = state.user.course;
+                document.getElementById('editUserSemester').value = state.user.semester;
+                editProfileModal.style.display = 'flex';
+            });
+            
+            // Quick actions widget
+            quickWidget.addEventListener('click', function() {
+                quickActionsModal.style.display = 'flex';
+            });
+            
+            quickMarkAllPresent.addEventListener('click', function() {
+                markAllAttendance('present');
+                quickActionsModal.style.display = 'none';
+            });
+            
+            quickMarkAllAbsent.addEventListener('click', function() {
+                markAllAttendance('absent');
+                quickActionsModal.style.display = 'none';
+            });
+            
+            // Fix for quick add subject button
+            quickAddSubject.addEventListener('click', function() {
+                quickActionsModal.style.display = 'none';
+                addSubjectModal.style.display = 'flex';
+            });
+            
+            // Donation buttons
+            donateHeaderBtn.addEventListener('click', showDonationModal);
+            donateNowBtn.addEventListener('click', showDonationModal);
+            donateMainBtn.addEventListener('click', showDonationModal);
+            donateStatsBtn.addEventListener('click', showDonationModal);
+            donateCalendarBtn.addEventListener('click', showDonationModal);
+            donateProfileBtn.addEventListener('click', showDonationModal);
+            donateSettingsBtn.addEventListener('click', showDonationModal);
+            
+            // Logo animation
+            logo.addEventListener('click', function() {
+                const icon = this.querySelector('.logo-icon');
+                icon.style.animation = 'none';
+                setTimeout(() => {
+                    icon.style.animation = 'pulse 2s infinite';
+                }, 10);
+            });
+        });
+
+        // Show loader with progress animation
+        function showLoader() {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 2;
+                loaderProgress.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    // Check if user data exists
+                    const userData = localStorage.getItem('xtandence_user');
+                    const appData = localStorage.getItem('xtandence_data');
+                    
+                    // Hide loader and show main app
+                    setTimeout(() => {
+                        loader.style.opacity = '0';
+                        setTimeout(() => {
+                            loader.style.display = 'none';
+                            mainApp.style.display = 'block';
+                            
+                            if (userData) {
+                                state.user = JSON.parse(userData);
+                                if (appData) {
+                                    const data = JSON.parse(appData);
+                                    state.subjects = data.subjects || [];
+                                    state.activities = data.activities || [];
+                                    state.settings = data.settings || state.settings;
+                                }
+                                initializeApp();
+                                
+                                // Show donation prompt once a week
+                                checkDonationPrompt();
+                            } else {
+                                // Show welcome modal for new users
+                                welcomeModal.style.display = 'flex';
+                            }
+                        }, 500);
+                    }, 300);
+                }
+            }, 30);
+        }
+
+        // Show donation modal
+        function showDonationModal() {
+            donationModal.style.display = 'flex';
+            // Update last donation prompt date
+            state.settings.lastDonationPrompt = new Date().toISOString().split('T')[0];
+            saveData();
+        }
+
+        // Check if we should show donation prompt
+        function checkDonationPrompt() {
+            if (!state.settings.lastDonationPrompt) {
+                // First time user, show after 7 days
+                const sevenDaysFromNow = new Date();
+                sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
+                state.settings.lastDonationPrompt = sevenDaysFromNow.toISOString().split('T')[0];
+                saveData();
+                return;
+            }
+            
+            const lastPrompt = new Date(state.settings.lastDonationPrompt);
+            const today = new Date();
+            const diffTime = Math.abs(today - lastPrompt);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            // Show prompt every 7 days
+            if (diffDays >= 7) {
+                setTimeout(() => {
+                    showDonationModal();
+                }, 3000); // Show after 3 seconds of app loading
+            }
+        }
+
+        // Update time widget
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            currentTime.textContent = timeString;
+        }
+
+        // Change theme - FIXED
+        function changeTheme(theme) {
+            state.settings.theme = theme;
+            saveData();
+            
+            // Remove all theme classes
+            document.body.classList.remove('light-theme', 'blue-theme', 'green-theme', 'purple-theme');
+            
+            // Add selected theme class
+            if (theme !== 'dark') {
+                document.body.classList.add(theme + '-theme');
+            }
+            
+            // Update theme toggle icon based on current theme
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (theme === 'light') {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        // Set up icon selection grid
+        function setupIconGrid(container, defaultIcon) {
+            container.innerHTML = '';
+            availableIcons.forEach(iconClass => {
+                const iconOption = document.createElement('div');
+                iconOption.className = `icon-option ${iconClass === defaultIcon ? 'selected' : ''}`;
+                iconOption.innerHTML = `<i class="${iconClass}"></i>`;
+                iconOption.addEventListener('click', function() {
+                    container.querySelectorAll('.icon-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    selectedIcon = iconClass;
+                });
+                container.appendChild(iconOption);
+            });
+        }
+
+        // Set up color options
+        function setupColorOptions(container, defaultColor) {
+            const colors = ['#6d28d9', '#0d9488', '#dc2626', '#f59e0b', '#16a34a', '#2563eb', '#9333ea', '#ea580c'];
+            container.innerHTML = '';
+            colors.forEach(color => {
+                const colorOption = document.createElement('div');
+                colorOption.className = `color-option ${color === defaultColor ? 'selected' : ''}`;
+                colorOption.style.backgroundColor = color;
+                colorOption.setAttribute('data-color', color);
+                colorOption.addEventListener('click', function() {
+                    container.querySelectorAll('.color-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    selectedColor = color;
+                });
+                container.appendChild(colorOption);
+            });
+        }
+
+        // Handle welcome form submission
+        function handleWelcomeSubmit(e) {
+            e.preventDefault();
+            
+            const userName = document.getElementById('userName').value;
+            const userCollege = document.getElementById('userCollege').value;
+            const userCourse = document.getElementById('userCourse').value;
+            const userSemester = document.getElementById('userSemester').value;
+            
+            state.user = {
+                name: userName,
+                college: userCollege,
+                course: userCourse,
+                semester: userSemester,
+                joinDate: new Date().toISOString().split('T')[0]
+            };
+            
+            saveData();
+            welcomeModal.style.display = 'none';
+            initializeApp();
+            showNotification(`Welcome to Xtandence, ${userName}!`);
+        }
+
+        // Initialize the app after user data is set
+        function initializeApp() {
+            // Apply settings
+            changeTheme(state.settings.theme);
+            
+            // Update theme selector
+            themeSelector.querySelectorAll('.theme-option').forEach(opt => {
+                if (opt.getAttribute('data-theme') === state.settings.theme) {
+                    opt.classList.add('selected');
+                } else {
+                    opt.classList.remove('selected');
+                }
+            });
+            
+            notificationsToggle.checked = state.settings.notifications;
+            backupToggle.checked = state.settings.autoBackup;
+            
+            // Update profile
+            updateProfile();
+            
+            // Set greeting based on time of day
+            setGreeting();
+            
+            // Render initial data
+            renderSubjects();
+            renderActivities();
+            updateStats();
+            renderCalendar();
+            renderStatsPage();
+        }
+
+        // Set greeting based on time of day
+        function setGreeting() {
+            const hour = new Date().getHours();
+            let greeting = '';
+            
+            if (hour < 12) {
+                greeting = 'Good morning';
+            } else if (hour < 18) {
+                greeting = 'Good afternoon';
+            } else {
+                greeting = 'Good evening';
+            }
+            
+            if (state.user) {
+                homeGreeting.textContent = `${greeting}, ${state.user.name.split(' ')[0]}! Track your attendance and stay on top of your classes.`;
+            }
+        }
+
+        // Switch between pages
+        function switchPage(pageId) {
+            // Update navigation
+            navItems.forEach(item => {
+                if (item.getAttribute('data-page') === pageId) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            // Show selected page
+            pages.forEach(page => {
+                if (page.id === pageId) {
+                    page.classList.add('active');
+                    
+                    // Update page-specific content
+                    if (pageId === 'statsPage') {
+                        renderStatsPage();
+                    } else if (pageId === 'calendarPage') {
+                        renderCalendar();
+                    } else if (pageId === 'profilePage') {
+                        updateProfile();
+                    }
+                } else {
+                    page.classList.remove('active');
+                }
+            });
+        }
+
+        // Render subjects
+        function renderSubjects() {
+            subjectsContainer.innerHTML = '';
+            
+            if (state.subjects.length === 0) {
+                subjectsContainer.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                        <i class="fas fa-book-open" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <h3>No subjects added yet</h3>
+                        <p>Add your first subject to start tracking attendance</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            state.subjects.forEach(subject => {
+                const percent = subject.total > 0 ? Math.round((subject.present / subject.total) * 100) : 0;
+                
+                let progressClass = 'good-attendance';
+                if (percent < 75) progressClass = 'warning-attendance';
+                if (percent < 60) progressClass = 'poor-attendance';
+                
+                const subjectCard = document.createElement('div');
+                subjectCard.className = 'subject-card';
+                subjectCard.style.setProperty('--subject-color', subject.color);
+                subjectCard.innerHTML = `
+                    <div class="subject-actions">
+                        <button class="subject-action-btn edit-subject-btn" data-id="${subject.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="subject-icon" style="background-color: ${subject.color};">
+                        <i class="${subject.icon}"></i>
+                    </div>
+                    <div class="subject-name">${subject.name}</div>
+                    <div class="attendance-percent">${percent}%</div>
+                    <div class="attendance-progress">
+                        <div class="progress-bar ${progressClass}" style="width: ${percent}%"></div>
+                    </div>
+                    <div class="attendance-actions">
+                        <button class="attendance-btn present-btn" data-id="${subject.id}" data-type="present">
+                            <i class="fas fa-check"></i> Present
+                        </button>
+                        <button class="attendance-btn absent-btn" data-id="${subject.id}" data-type="absent">
+                            <i class="fas fa-times"></i> Absent
+                        </button>
+                    </div>
+                `;
+                
+                subjectsContainer.appendChild(subjectCard);
+            });
+            
+            // Add event listeners to attendance buttons
+            document.querySelectorAll('.attendance-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const subjectId = parseInt(this.getAttribute('data-id'));
+                    const type = this.getAttribute('data-type');
+                    markAttendance(subjectId, type);
+                });
+            });
+            
+            // Add event listeners to edit buttons
+            document.querySelectorAll('.edit-subject-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const subjectId = parseInt(this.getAttribute('data-id'));
+                    editSubject(subjectId);
+                });
+            });
+        }
+
+        // Edit subject
+        function editSubject(subjectId) {
+            const subject = state.subjects.find(s => s.id === subjectId);
+            if (!subject) return;
+            
+            document.getElementById('editSubjectId').value = subject.id;
+            document.getElementById('editSubjectName').value = subject.name;
+            
+            // Set selected color
+            setupColorOptions(editSubjectColors, subject.color);
+            selectedColor = subject.color;
+            
+            // Set selected icon
+            setupIconGrid(editIconGrid, subject.icon);
+            selectedIcon = subject.icon;
+            
+            editSubjectModal.style.display = 'flex';
+        }
+
+        // Render activities
+        function renderActivities() {
+            recentActivity.innerHTML = '';
+            
+            if (state.activities.length === 0) {
+                recentActivity.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 20px;">No recent activity</p>';
+                return;
+            }
+            
+            // Sort activities by date (newest first)
+            const sortedActivities = [...state.activities].sort((a, b) => {
+                // First sort by date
+                const dateCompare = new Date(b.date) - new Date(a.date);
+                if (dateCompare !== 0) return dateCompare;
+                
+                // If same date, sort by time (newest first)
+                return new Date(b.time) - new Date(a.time);
+            });
+            
+            // Show only last 5 activities
+            const recentActivities = sortedActivities.slice(0, 5);
+            
+            recentActivities.forEach(activity => {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+                
+                const iconClass = activity.type === 'present' ? 'present-icon' : 'absent-icon';
+                const icon = activity.type === 'present' ? 'fa-check' : 'fa-times';
+                
+                activityItem.innerHTML = `
+                    <div class="activity-icon ${iconClass}">
+                        <i class="fas ${icon}"></i>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-subject">${activity.subject}</div>
+                        <div class="activity-date">${formatDate(activity.date)} • ${activity.type === 'present' ? 'Present' : 'Absent'}</div>
+                        <div class="activity-time">${formatTime(activity.time)}</div>
+                    </div>
+                `;
+                
+                recentActivity.appendChild(activityItem);
+            });
+        }
+
+        // Mark attendance
+        function markAttendance(subjectId, type) {
+            const subject = state.subjects.find(s => s.id === subjectId);
+            if (!subject) return;
+            
+            // Update subject attendance
+            subject.total++;
+            if (type === 'present') {
+                subject.present++;
+            }
+            
+            // Add to activities
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            const time = now.toTimeString().split(' ')[0];
+            
+            state.activities.unshift({
+                id: Date.now(),
+                subject: subject.name,
+                type: type,
+                date: today,
+                time: time
+            });
+            
+            // Save and update UI
+            saveData();
+            renderSubjects();
+            renderActivities();
+            updateStats();
+            
+            // Update other pages if needed
+            if (document.getElementById('statsPage').classList.contains('active')) {
+                renderStatsPage();
+            }
+            if (document.getElementById('calendarPage').classList.contains('active')) {
+                renderCalendar();
+            }
+            
+            // Show confirmation
+            const status = type === 'present' ? 'present' : 'absent';
+            showNotification(`Marked as ${status} for ${subject.name}`);
+        }
+
+        // Mark all attendance
+        function markAllAttendance(type) {
+            if (state.subjects.length === 0) {
+                showNotification('No subjects to mark attendance for!');
+                return;
+            }
+            
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            const time = now.toTimeString().split(' ')[0];
+            
+            state.subjects.forEach(subject => {
+                subject.total++;
+                if (type === 'present') {
+                    subject.present++;
+                }
+                
+                state.activities.unshift({
+                    id: Date.now(),
+                    subject: subject.name,
+                    type: type,
+                    date: today,
+                    time: time
+                });
+            });
+            
+            // Save and update UI
+            saveData();
+            renderSubjects();
+            renderActivities();
+            updateStats();
+            
+            // Update other pages if needed
+            if (document.getElementById('statsPage').classList.contains('active')) {
+                renderStatsPage();
+            }
+            if (document.getElementById('calendarPage').classList.contains('active')) {
+                renderCalendar();
+            }
+            
+            // Show confirmation
+            showNotification(`Marked all subjects as ${type}!`);
+        }
+
+        // Update statistics
+        function updateStats() {
+            totalSubjectsEl.textContent = state.subjects.length;
+            
+            // Calculate today's attendance
+            const today = new Date().toISOString().split('T')[0];
+            const todayActivities = state.activities.filter(a => a.date === today);
+            const todayPresent = todayActivities.filter(a => a.type === 'present').length;
+            todayAttendanceEl.textContent = `${todayPresent}/${state.subjects.length}`;
+            
+            // Calculate overall percentage
+            let totalPresent = 0;
+            let totalClasses = 0;
+            
+            state.subjects.forEach(subject => {
+                totalPresent += subject.present;
+                totalClasses += subject.total;
+            });
+            
+            const overallPercent = totalClasses > 0 ? Math.round((totalPresent / totalClasses) * 100) : 0;
+            overallPercentEl.textContent = `${overallPercent}%`;
+            
+            // Calculate streak (simplified)
+            const streak = calculateStreak();
+            currentStreakEl.textContent = `${streak} days`;
+        }
+
+        // Calculate attendance streak
+        function calculateStreak() {
+            if (state.activities.length === 0) return 0;
+            
+            // Sort activities by date (newest first)
+            const sortedActivities = [...state.activities].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            let streak = 0;
+            let currentDate = new Date();
+            const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
+            
+            // Check if today has any attendance
+            const today = new Date().toISOString().split('T')[0];
+            const todayActivities = sortedActivities.filter(a => a.date === today);
+            
+            if (todayActivities.length > 0) {
+                streak = 1;
+                currentDate.setDate(currentDate.getDate() - 1);
+            } else {
+                // If no attendance today, streak is 0
+                return 0;
+            }
+            
+            // Check previous days
+            for (let i = 1; i <= 30; i++) { // Check up to 30 days back
+                const checkDate = new Date(currentDate);
+                const dateString = checkDate.toISOString().split('T')[0];
+                
+                const dayActivities = sortedActivities.filter(a => a.date === dateString);
+                
+                if (dayActivities.length > 0) {
+                    streak++;
+                    currentDate.setDate(currentDate.getDate() - 1);
+                } else {
+                    break;
+                }
+            }
+            
+            return streak;
+        }
+
+        // Update profile page
+        function updateProfile() {
+            if (!state.user) return;
+            
+            profileUserName.textContent = state.user.name;
+            profileUserCollege.textContent = state.user.college;
+            profileUserCourse.textContent = state.user.course;
+            profileUserSemester.textContent = `Semester ${state.user.semester}`;
+            profileJoinDate.textContent = formatDate(state.user.joinDate);
+            profileTotalSubjects.textContent = state.subjects.length;
+            
+            // Calculate overall attendance
+            let totalPresent = 0;
+            let totalClasses = 0;
+            
+            state.subjects.forEach(subject => {
+                totalPresent += subject.present;
+                totalClasses += subject.total;
+            });
+            
+            const overallPercent = totalClasses > 0 ? Math.round((totalPresent / totalClasses) * 100) : 0;
+            profileOverallAttendance.textContent = `${overallPercent}%`;
+            
+            const streak = calculateStreak();
+            profileCurrentStreak.textContent = `${streak} days`;
+        }
+
+        // Render calendar
+        function renderCalendar() {
+            // Update month header
+            const options = { year: 'numeric', month: 'long' };
+            currentMonthEl.textContent = state.calendarDate.toLocaleDateString('en-US', options);
+            
+            // Clear previous calendar
+            while (calendarDays.children.length > 7) {
+                calendarDays.removeChild(calendarDays.lastChild);
+            }
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth(), 1);
+            const lastDay = new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth() + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-date';
+                calendarDays.appendChild(emptyCell);
+            }
+            
+            // Add cells for each day of the month
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dateCell = document.createElement('div');
+                dateCell.className = 'calendar-date';
+                dateCell.textContent = i;
+                
+                // Check if this date has any attendance
+                const dateString = `${state.calendarDate.getFullYear()}-${String(state.calendarDate.getMonth() + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                const dateActivities = state.activities.filter(a => a.date === dateString);
+                
+                if (dateActivities.length > 0) {
+                    dateCell.classList.add('has-attendance');
+                }
+                
+                // Check if this is today
+                const today = new Date();
+                if (state.calendarDate.getMonth() === today.getMonth() && 
+                    state.calendarDate.getFullYear() === today.getFullYear() && 
+                    i === today.getDate()) {
+                    dateCell.classList.add('active');
+                }
+                
+                calendarDays.appendChild(dateCell);
+            }
+            
+            // Update calendar activity
+            renderCalendarActivity();
+        }
+
+        // Render calendar activity
+        function renderCalendarActivity() {
+            calendarActivity.innerHTML = '';
+            
+            // Get activities for the current month
+            const year = state.calendarDate.getFullYear();
+            const month = state.calendarDate.getMonth() + 1;
+            const monthString = `${year}-${String(month).padStart(2, '0')}`;
+            
+            const monthActivities = state.activities.filter(a => a.date.startsWith(monthString));
+            
+            if (monthActivities.length === 0) {
+                calendarActivity.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 20px;">No attendance records for this month</p>';
+                return;
+            }
+            
+            // Sort by date (newest first)
+            const sortedActivities = [...monthActivities].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Show only last 10 activities
+            const displayActivities = sortedActivities.slice(0, 10);
+            
+            displayActivities.forEach(activity => {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+                
+                const iconClass = activity.type === 'present' ? 'present-icon' : 'absent-icon';
+                const icon = activity.type === 'present' ? 'fa-check' : 'fa-times';
+                
+                activityItem.innerHTML = `
+                    <div class="activity-icon ${iconClass}">
+                        <i class="fas ${icon}"></i>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-subject">${activity.subject}</div>
+                        <div class="activity-date">${formatDate(activity.date)} • ${activity.type === 'present' ? 'Present' : 'Absent'}</div>
+                        <div class="activity-time">${formatTime(activity.time)}</div>
+                    </div>
+                `;
+                
+                calendarActivity.appendChild(activityItem);
+            });
+        }
+
+        // Render stats page
+        function renderStatsPage() {
+            // Update subject stats
+            statsSubjectsContainer.innerHTML = '';
+            
+            if (state.subjects.length === 0) {
+                statsSubjectsContainer.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                        <i class="fas fa-chart-pie" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <h3>No data available</h3>
+                        <p>Add subjects and mark attendance to see statistics</p>
+                    </div>
+                `;
+                
+                bestSubjectEl.textContent = '--';
+                worstSubjectEl.textContent = '--';
+                bestSubjectPercentEl.textContent = '--%';
+                worstSubjectPercentEl.textContent = '--%';
+                monthAttendanceEl.textContent = '--%';
+                longestStreakEl.textContent = '0 days';
+                return;
+            }
+            
+            // Find best and worst subjects
+            let bestSubject = null;
+            let worstSubject = null;
+            let bestPercent = -1;
+            let worstPercent = 101;
+            
+            state.subjects.forEach(subject => {
+                const percent = subject.total > 0 ? Math.round((subject.present / subject.total) * 100) : 0;
+                
+                if (percent > bestPercent) {
+                    bestPercent = percent;
+                    bestSubject = subject;
+                }
+                
+                if (percent < worstPercent && subject.total > 0) {
+                    worstPercent = percent;
+                    worstSubject = subject;
+                }
+                
+                // Create subject card for stats page
+                const subjectCard = document.createElement('div');
+                subjectCard.className = 'subject-card';
+                subjectCard.style.setProperty('--subject-color', subject.color);
+                subjectCard.innerHTML = `
+                    <div class="subject-icon" style="background-color: ${subject.color};">
+                        <i class="${subject.icon}"></i>
+                    </div>
+                    <div class="subject-name">${subject.name}</div>
+                    <div class="attendance-percent">${percent}%</div>
+                    <div class="attendance-progress">
+                        <div class="progress-bar ${percent >= 75 ? 'good-attendance' : percent >= 60 ? 'warning-attendance' : 'poor-attendance'}" 
+                             style="width: ${percent}%"></div>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 0.85rem; color: var(--text-muted);">
+                        ${subject.present}/${subject.total} classes
+                    </div>
+                `;
+                
+                statsSubjectsContainer.appendChild(subjectCard);
+            });
+            
+            // Update best/worst subject displays
+            if (bestSubject) {
+                bestSubjectEl.textContent = bestSubject.name;
+                bestSubjectPercentEl.textContent = `${bestPercent}%`;
+            }
+            
+            if (worstSubject) {
+                worstSubjectEl.textContent = worstSubject.name;
+                worstSubjectPercentEl.textContent = `${worstPercent}%`;
+            }
+            
+            // Calculate monthly attendance
+            const today = new Date();
+            const monthString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+            const monthActivities = state.activities.filter(a => a.date.startsWith(monthString));
+            const monthPresent = monthActivities.filter(a => a.type === 'present').length;
+            const monthTotal = monthActivities.length;
+            const monthPercent = monthTotal > 0 ? Math.round((monthPresent / monthTotal) * 100) : 0;
+            monthAttendanceEl.textContent = `${monthPercent}%`;
+            
+            // Calculate longest streak
+            const longestStreak = calculateLongestStreak();
+            longestStreakEl.textContent = `${longestStreak} days`;
+        }
+
+        // Calculate longest streak
+        function calculateLongestStreak() {
+            if (state.activities.length === 0) return 0;
+            
+            // Sort activities by date
+            const sortedActivities = [...state.activities].sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            let longestStreak = 0;
+            let currentStreak = 0;
+            let previousDate = null;
+            
+            sortedActivities.forEach(activity => {
+                const currentDate = new Date(activity.date);
+                
+                if (previousDate === null) {
+                    // First activity
+                    currentStreak = 1;
+                } else {
+                    // Check if this activity is on the next day
+                    const diffTime = currentDate - previousDate;
+                    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+                    
+                    if (diffDays === 1) {
+                        // Consecutive day
+                        currentStreak++;
+                    } else if (diffDays > 1) {
+                        // Gap in attendance, reset streak
+                        currentStreak = 1;
+                    }
+                    // If diffDays === 0, same day - don't change streak
+                }
+                
+                if (currentStreak > longestStreak) {
+                    longestStreak = currentStreak;
+                }
+                
+                previousDate = currentDate;
+            });
+            
+            return longestStreak;
+        }
+
+        // Format date for display
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+
+        // Format time for display
+        function formatTime(timeString) {
+            if (!timeString) return '';
+            const [hours, minutes] = timeString.split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour % 12 || 12;
+            return `${displayHour}:${minutes} ${ampm}`;
+        }
+
+        // Show notification
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                z-index: 1000;
+                transform: translateX(150%);
+                transition: transform 0.3s ease;
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Animate out and remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(150%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            if (state.subjects.length === 0 && state.activities.length === 0) {
+                showNotification('No data to export!');
+                return;
+            }
+            
+            let csvContent = "Subject,Present Days,Total Days,Attendance %\n";
+            
+            state.subjects.forEach(subject => {
+                const percent = subject.total > 0 ? Math.round((subject.present / subject.total) * 100) : 0;
+                csvContent += `"${subject.name}",${subject.present},${subject.total},${percent}%\n`;
+            });
+            
+            csvContent += "\nDate,Time,Subject,Status\n";
+            
+            state.activities.forEach(activity => {
+                csvContent += `"${activity.date}","${activity.time}","${activity.subject}","${activity.type}"\n`;
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `xtandence_data_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Data exported successfully!');
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('xtandence_user', JSON.stringify(state.user));
+            localStorage.setItem('xtandence_data', JSON.stringify({
+                subjects: state.subjects,
+                activities: state.activities,
+                settings: state.settings
+            }));
+        }
+    </script>
+</body>
+</html>
