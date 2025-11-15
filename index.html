@@ -194,18 +194,6 @@
             opacity: 0.9;
         }
 
-        .loader-credits {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .loader-credits p {
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
         .loader-progress {
             width: 200px;
             height: 4px;
@@ -221,6 +209,18 @@
             border-radius: 2px;
             width: 0%;
             transition: width 0.3s ease;
+        }
+
+        .loader-credits {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .loader-credits p {
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            opacity: 0.8;
         }
 
         .desktop-suggestion {
@@ -1171,6 +1171,203 @@
             opacity: 1;
         }
 
+        /* Manual Attendance Editing Styles */
+        .manual-attendance-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .manual-attendance-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            background: var(--bg-input);
+            transition: var(--transition);
+        }
+
+        .manual-attendance-toggle:hover {
+            background: var(--bg-secondary);
+        }
+
+        .manual-attendance-toggle i {
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .manual-attendance-form {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--bg-input);
+            border-radius: 10px;
+        }
+
+        .manual-attendance-form.active {
+            display: grid;
+        }
+
+        .manual-attendance-form .form-group {
+            margin-bottom: 0;
+        }
+
+        .manual-attendance-form label {
+            font-size: 0.85rem;
+        }
+
+        .manual-attendance-form .form-control {
+            padding: 10px 12px;
+            font-size: 0.9rem;
+        }
+
+        .attendance-summary {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .attendance-summary span {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* Calendar Day Edit Styles */
+        .calendar-date.editable {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .calendar-date.editable:hover::after {
+            content: '✏️';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            font-size: 0.7rem;
+        }
+
+        /* TerraWell Integration Styles */
+        .terrawell-promo {
+            background: linear-gradient(135deg, #059669, #047857);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .terrawell-promo h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .terrawell-promo p {
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .terrawell-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .terrawell-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Calendar Day Edit Modal Styles */
+        .day-activities {
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 15px 0;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .day-activity {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .day-activity:last-child {
+            border-bottom: none;
+        }
+
+        .day-activity-subject {
+            font-weight: 600;
+        }
+
+        .day-activity-status {
+            display: flex;
+            gap: 5px;
+        }
+
+        .status-btn {
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .status-present {
+            background: rgba(22, 163, 74, 0.2);
+            color: var(--success);
+        }
+
+        .status-absent {
+            background: rgba(220, 38, 38, 0.2);
+            color: var(--danger);
+        }
+
+        .status-btn.active {
+            background: var(--success);
+            color: white;
+        }
+
+        .status-absent.active {
+            background: var(--danger);
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
         @media (min-width: 768px) {
             .container {
                 padding: 0 25px;
@@ -1254,6 +1451,14 @@
             .desktop-suggestion {
                 display: block;
             }
+            
+            .manual-attendance-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -1333,6 +1538,30 @@
             </div>
         </div>
 
+        <!-- Calendar Day Edit Modal -->
+        <div class="modal" id="calendarDayModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="calendarDayTitle">Edit Attendance for </h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="day-activities" id="dayActivities">
+                    <!-- Day activities will be dynamically added here -->
+                </div>
+                <div class="quick-actions">
+                    <button class="attendance-btn present-btn" id="markAllPresent">
+                        <i class="fas fa-check-circle"></i> Mark All Present
+                    </button>
+                    <button class="attendance-btn absent-btn" id="markAllAbsent">
+                        <i class="fas fa-times-circle"></i> Mark All Absent
+                    </button>
+                </div>
+                <button class="btn-primary" id="saveDayAttendance" style="margin-top: 15px;">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+
         <header>
             <div class="container">
                 <div class="header-content">
@@ -1367,6 +1596,15 @@
                 <div class="greeting">
                     <h2><i class="fas fa-home"></i> Welcome back!</h2>
                     <p id="homeGreeting">Track your attendance and stay on top of your classes.</p>
+                </div>
+
+                <!-- TerraWell Promotion -->
+                <div class="terrawell-promo">
+                    <h3><i class="fas fa-seedling"></i> Check out TerraWell</h3>
+                    <p>Monitor your environmental impact with our sustainability tracking platform</p>
+                    <a href="https://terrawell.onrender.com" target="_blank" class="terrawell-btn">
+                        <i class="fas fa-external-link-alt"></i> Visit TerraWell
+                    </a>
                 </div>
 
                 <div class="stats-container">
@@ -1471,7 +1709,7 @@
             <div class="page" id="calendarPage">
                 <div class="greeting">
                     <h2><i class="fas fa-calendar-alt"></i> Attendance Calendar</h2>
-                    <p>View your attendance history by month.</p>
+                    <p>View your attendance history by month. Click on any date to edit attendance.</p>
                 </div>
 
                 <div class="calendar-container">
@@ -1737,6 +1975,30 @@
                             <!-- Icons will be dynamically added here -->
                         </div>
                     </div>
+                    
+                    <!-- Manual Attendance Editing Section -->
+                    <div class="manual-attendance-section">
+                        <div class="manual-attendance-toggle" id="manualAttendanceToggle">
+                            <i class="fas fa-edit"></i>
+                            <span>Edit Attendance Manually</span>
+                        </div>
+                        
+                        <div class="manual-attendance-form" id="manualAttendanceForm">
+                            <div class="form-group">
+                                <label for="editPresentDays">Present Days</label>
+                                <input type="number" id="editPresentDays" class="form-control" min="0" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="editAbsentDays">Absent Days</label>
+                                <input type="number" id="editAbsentDays" class="form-control" min="0" value="0">
+                            </div>
+                            <div class="attendance-summary">
+                                <div>Total: <span id="editTotalDays">0</span></div>
+                                <div>Percentage: <span id="editAttendancePercent">0%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="form-group" style="display: flex; gap: 10px;">
                         <button type="submit" class="btn-primary" style="flex: 2;">Update Subject</button>
                         <button type="button" id="deleteSubjectBtn" class="attendance-btn absent-btn" style="flex: 1;">Delete</button>
@@ -1812,7 +2074,8 @@
                 notifications: false,
                 autoBackup: true,
                 lastDonationPrompt: null
-            }
+            },
+            selectedDay: null
         };
 
         // Available icons for subjects
@@ -1830,6 +2093,7 @@
         const mainApp = document.getElementById('mainApp');
         const welcomeModal = document.getElementById('welcomeModal');
         const donationModal = document.getElementById('donationModal');
+        const calendarDayModal = document.getElementById('calendarDayModal');
         const welcomeForm = document.getElementById('welcomeForm');
         const themeToggle = document.getElementById('themeToggle');
         const donateHeaderBtn = document.getElementById('donateHeaderBtn');
@@ -1897,10 +2161,22 @@
         const donateCalendarBtn = document.getElementById('donateCalendarBtn');
         const donateProfileBtn = document.getElementById('donateProfileBtn');
         const donateSettingsBtn = document.getElementById('donateSettingsBtn');
+        const manualAttendanceToggle = document.getElementById('manualAttendanceToggle');
+        const manualAttendanceForm = document.getElementById('manualAttendanceForm');
+        const editPresentDays = document.getElementById('editPresentDays');
+        const editAbsentDays = document.getElementById('editAbsentDays');
+        const editTotalDays = document.getElementById('editTotalDays');
+        const editAttendancePercent = document.getElementById('editAttendancePercent');
+        const calendarDayTitle = document.getElementById('calendarDayTitle');
+        const dayActivities = document.getElementById('dayActivities');
+        const markAllPresent = document.getElementById('markAllPresent');
+        const markAllAbsent = document.getElementById('markAllAbsent');
+        const saveDayAttendance = document.getElementById('saveDayAttendance');
 
         let selectedColor = '#6d28d9';
         let selectedIcon = 'fas fa-calculator';
         let editingSubjectId = null;
+        let dayEditData = {};
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
@@ -1982,9 +2258,54 @@
                 
                 const subjectIndex = state.subjects.findIndex(s => s.id === subjectId);
                 if (subjectIndex !== -1) {
+                    // Update basic subject info
                     state.subjects[subjectIndex].name = subjectName;
                     state.subjects[subjectIndex].color = selectedColor;
                     state.subjects[subjectIndex].icon = selectedIcon;
+                    
+                    // Check if manual attendance was edited
+                    if (manualAttendanceForm.classList.contains('active')) {
+                        const newPresent = parseInt(editPresentDays.value) || 0;
+                        const newAbsent = parseInt(editAbsentDays.value) || 0;
+                        const newTotal = newPresent + newAbsent;
+                        
+                        // Update subject attendance
+                        state.subjects[subjectIndex].present = newPresent;
+                        state.subjects[subjectIndex].total = newTotal;
+                        
+                        // Remove old activities for this subject
+                        state.activities = state.activities.filter(a => a.subject !== subjectName);
+                        
+                        // Add new activities based on manual input
+                        // For simplicity, we'll add placeholder activities with today's date
+                        // In a real app, you might want to let users specify dates
+                        if (newTotal > 0) {
+                            const today = new Date().toISOString().split('T')[0];
+                            const time = new Date().toTimeString().split(' ')[0];
+                            
+                            // Add present activities
+                            for (let i = 0; i < newPresent; i++) {
+                                state.activities.unshift({
+                                    id: Date.now() + i,
+                                    subject: subjectName,
+                                    type: 'present',
+                                    date: today,
+                                    time: time
+                                });
+                            }
+                            
+                            // Add absent activities
+                            for (let i = 0; i < newAbsent; i++) {
+                                state.activities.unshift({
+                                    id: Date.now() + newPresent + i,
+                                    subject: subjectName,
+                                    type: 'absent',
+                                    date: today,
+                                    time: time
+                                });
+                            }
+                        }
+                    }
                     
                     saveData();
                     renderSubjects();
@@ -2162,7 +2483,51 @@
                     icon.style.animation = 'pulse 2s infinite';
                 }, 10);
             });
+            
+            // Manual attendance toggle
+            manualAttendanceToggle.addEventListener('click', function() {
+                manualAttendanceForm.classList.toggle('active');
+                if (manualAttendanceForm.classList.contains('active')) {
+                    this.innerHTML = '<i class="fas fa-times"></i> <span>Hide Manual Editing</span>';
+                } else {
+                    this.innerHTML = '<i class="fas fa-edit"></i> <span>Edit Attendance Manually</span>';
+                }
+            });
+            
+            // Update attendance summary when manual values change
+            editPresentDays.addEventListener('input', updateAttendanceSummary);
+            editAbsentDays.addEventListener('input', updateAttendanceSummary);
+            
+            // Calendar day edit actions
+            markAllPresent.addEventListener('click', function() {
+                Object.keys(dayEditData).forEach(subjectId => {
+                    dayEditData[subjectId] = 'present';
+                });
+                renderDayActivities();
+            });
+            
+            markAllAbsent.addEventListener('click', function() {
+                Object.keys(dayEditData).forEach(subjectId => {
+                    dayEditData[subjectId] = 'absent';
+                });
+                renderDayActivities();
+            });
+            
+            saveDayAttendance.addEventListener('click', function() {
+                saveDayAttendanceData();
+            });
         });
+
+        // Update attendance summary when manual values change
+        function updateAttendanceSummary() {
+            const present = parseInt(editPresentDays.value) || 0;
+            const absent = parseInt(editAbsentDays.value) || 0;
+            const total = present + absent;
+            const percent = total > 0 ? Math.round((present / total) * 100) : 0;
+            
+            editTotalDays.textContent = total;
+            editAttendancePercent.textContent = `${percent}%`;
+        }
 
         // Show loader with progress animation
         function showLoader() {
@@ -2494,6 +2859,15 @@
             setupIconGrid(editIconGrid, subject.icon);
             selectedIcon = subject.icon;
             
+            // Set manual attendance values
+            editPresentDays.value = subject.present;
+            editAbsentDays.value = subject.total - subject.present;
+            updateAttendanceSummary();
+            
+            // Hide manual attendance form by default
+            manualAttendanceForm.classList.remove('active');
+            manualAttendanceToggle.innerHTML = '<i class="fas fa-edit"></i> <span>Edit Attendance Manually</span>';
+            
             editSubjectModal.style.display = 'flex';
         }
 
@@ -2749,7 +3123,7 @@
             // Add cells for each day of the month
             for (let i = 1; i <= daysInMonth; i++) {
                 const dateCell = document.createElement('div');
-                dateCell.className = 'calendar-date';
+                dateCell.className = 'calendar-date editable';
                 dateCell.textContent = i;
                 
                 // Check if this date has any attendance
@@ -2768,11 +3142,138 @@
                     dateCell.classList.add('active');
                 }
                 
+                // Add click event for editing
+                dateCell.addEventListener('click', function() {
+                    editDayAttendance(dateString, i);
+                });
+                
                 calendarDays.appendChild(dateCell);
             }
             
             // Update calendar activity
             renderCalendarActivity();
+        }
+
+        // Edit day attendance
+        function editDayAttendance(dateString, day) {
+            state.selectedDay = dateString;
+            const date = new Date(dateString);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            calendarDayTitle.textContent = `Edit Attendance for ${date.toLocaleDateString('en-US', options)}`;
+            
+            // Initialize day edit data
+            dayEditData = {};
+            state.subjects.forEach(subject => {
+                // Check if there's an activity for this subject on this day
+                const activity = state.activities.find(a => a.date === dateString && a.subject === subject.name);
+                dayEditData[subject.id] = activity ? activity.type : 'none';
+            });
+            
+            renderDayActivities();
+            calendarDayModal.style.display = 'flex';
+        }
+
+        // Render day activities
+        function renderDayActivities() {
+            dayActivities.innerHTML = '';
+            
+            if (state.subjects.length === 0) {
+                dayActivities.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 20px;">No subjects added yet</p>';
+                return;
+            }
+            
+            state.subjects.forEach(subject => {
+                const activityDiv = document.createElement('div');
+                activityDiv.className = 'day-activity';
+                
+                const status = dayEditData[subject.id] || 'none';
+                
+                activityDiv.innerHTML = `
+                    <div class="day-activity-subject">${subject.name}</div>
+                    <div class="day-activity-status">
+                        <button class="status-btn status-present ${status === 'present' ? 'active' : ''}" data-id="${subject.id}" data-status="present">
+                            Present
+                        </button>
+                        <button class="status-btn status-absent ${status === 'absent' ? 'active' : ''}" data-id="${subject.id}" data-status="absent">
+                            Absent
+                        </button>
+                    </div>
+                `;
+                
+                dayActivities.appendChild(activityDiv);
+            });
+            
+            // Add event listeners to status buttons
+            dayActivities.querySelectorAll('.status-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const subjectId = parseInt(this.getAttribute('data-id'));
+                    const status = this.getAttribute('data-status');
+                    
+                    // Update the status
+                    dayEditData[subjectId] = status;
+                    
+                    // Update UI
+                    renderDayActivities();
+                });
+            });
+        }
+
+        // Save day attendance data
+        function saveDayAttendanceData() {
+            const dateString = state.selectedDay;
+            
+            // Remove existing activities for this day
+            state.activities = state.activities.filter(a => a.date !== dateString);
+            
+            // Add new activities
+            Object.keys(dayEditData).forEach(subjectId => {
+                const status = dayEditData[subjectId];
+                if (status !== 'none') {
+                    const subject = state.subjects.find(s => s.id === parseInt(subjectId));
+                    if (subject) {
+                        state.activities.unshift({
+                            id: Date.now() + Math.random(),
+                            subject: subject.name,
+                            type: status,
+                            date: dateString,
+                            time: '12:00:00' // Default time for manual edits
+                        });
+                    }
+                }
+            });
+            
+            // Recalculate subject statistics
+            recalculateSubjectStats();
+            
+            // Save and update UI
+            saveData();
+            renderSubjects();
+            renderActivities();
+            updateStats();
+            renderCalendar();
+            
+            calendarDayModal.style.display = 'none';
+            showNotification('Attendance updated successfully!');
+        }
+
+        // Recalculate subject statistics based on activities
+        function recalculateSubjectStats() {
+            // Reset all subject counts
+            state.subjects.forEach(subject => {
+                subject.present = 0;
+                subject.total = 0;
+            });
+            
+            // Count present and total classes for each subject
+            state.activities.forEach(activity => {
+                const subject = state.subjects.find(s => s.name === activity.subject);
+                if (subject) {
+                    subject.total++;
+                    if (activity.type === 'present') {
+                        subject.present++;
+                    }
+                }
+            });
         }
 
         // Render calendar activity
